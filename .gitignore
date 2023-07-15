@@ -1,0 +1,6 @@
+/.pytest_cache
+/.vscode
+/allure_reports
+/geckodriver.log
+/logs
+/screenshots
