@@ -4,3 +4,6 @@
 /geckodriver.log
 /logs
 /screenshots
+/__pycache__
+*.pyc
+*.log
