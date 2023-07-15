@@ -16,10 +16,10 @@ def setup(request):
     browser = request.config.getoption('browser')
 
     if browser == "firefox":
-        driver = webdriver.Firefox(executable_path="E:\Resourse\GeckoDriver\\geckodriver.exe")
+        driver = webdriver.Firefox()
     
     elif browser == "chrome":
-        driver = webdriver.Chrome(executable_path="E:\Resourse\ChromeDriver\\chromedriver.exe")
+        driver = webdriver.Chrome()
 
     driver.maximize_window()
 
