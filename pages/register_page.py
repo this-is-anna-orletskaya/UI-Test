@@ -34,7 +34,7 @@ class RegisterPage(BaseMethods):
         self.get_element_to_be_clickable_by_xpath(RegisterPageLocators.go_log_in_locator).click()
     
     def cheking_message(self):
-        return self.get_element_to_be_clickable_by_xpath(RegisterPageLocators.checking_message_locator)
+        return self.get_element_to_be_clickable_by_xpath(RegisterPageLocators.check_message_locator)
     
     def register(self, username, email, password):
         self.input_username(username)

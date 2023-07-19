@@ -32,6 +32,9 @@ class LoginPage(BaseMethods):
     def check_title(self):
         return self.get_element_to_be_clickable_by_xpath(LoginPageLocators.check_title_locator)
 
+    def check_danger_message(self):
+        return self.get_element_to_be_clickable_by_xpath(LoginPageLocators.check_danger_message_locator)
+
     
     """Основные тестовые методы"""
 

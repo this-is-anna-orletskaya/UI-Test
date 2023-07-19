@@ -7,7 +7,6 @@ from base_methods import BaseMethods
 
 
 
-
 """Страница настроек"""
 
 class SettingsPage(BaseMethods):

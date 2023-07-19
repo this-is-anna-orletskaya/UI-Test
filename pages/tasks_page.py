@@ -7,8 +7,7 @@ from base_methods import BaseMethods
 
 
 
-
-"""Страница регистрации на сайте"""
+"""Страница с выбором задач"""
 
 class TasksPage(BaseMethods):
 

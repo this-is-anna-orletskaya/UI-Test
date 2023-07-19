@@ -2,7 +2,6 @@
 
 
 
-
 class Assertions:
 
     @staticmethod

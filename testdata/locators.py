@@ -10,8 +10,8 @@ class RegisterPageLocators:
     password_field_locator = "//input[@id='password']"
     create_account_button_locator = "//button[@id='register-submit']"
     go_log_in_locator = "//a[@href='/login']"
-    checking_message_locator = "//div[@class='message danger']"
-    danger_message_locator = "//p[@class='help is-danger']"
+    check_message_locator = "//div[@class='message danger']"
+    check_danger_message_locator = "//p[@class='help is-danger']"
 
 
 class LoginPageLocators:
@@ -23,6 +23,8 @@ class LoginPageLocators:
     log_in_button_locator = "//button[@class='base-button base-button--type-button button is-primary']"
     go_register_link_locator = "//a[@href='/register']"
     check_title_locator = "//h2[@class='title']"
+    check_danger_message_locator = "//div[@class='message danger']"
+
 
 class MainPageLocators:
 
