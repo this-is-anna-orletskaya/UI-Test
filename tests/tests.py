@@ -2,6 +2,7 @@ import pytest
 import sys
 sys.path.append('./pages/')
 sys.path.append('./testdata/')
+sys.path.append('./utils/')
 from register_page import RegisterPage
 from login_page import LoginPage
 from main_page import MainPage
@@ -11,6 +12,8 @@ from settings_page import SettingsPage
 from tasks_page import TasksPage
 from users import DefaultUser, ShortUser, WrongUser
 from assertions import Assertions
+from logger import add_log
+
 
 
 
@@ -20,39 +23,52 @@ from assertions import Assertions
 class TestRegister:
 
     @pytest.fixture(autouse=True)
-    def load_url(self, setup):
+    def load_url(self, setup, request):
+        add_log(request).info("Test started")
         self.register_page = RegisterPage(self.driver)
+        add_log(request).debug("Loading register page")
         self.register_page.load()
 
 
     @pytest.mark.parametrize("username, email, password", [(DefaultUser.username, DefaultUser.email, DefaultUser.password), (ShortUser.username, ShortUser.email, ShortUser.password),])
-    def test_register_new_user(self, username, email, password):
-
+    def test_register_new_user(self, request, username, email, password):
+        
         rp = RegisterPage(self.driver)
+        add_log(request).info("Input user data")
+        add_log(request).debug("Input username")
         rp.input_username(username) 
+        add_log(request).debug("Input email")
         rp.input_email(email)
+        add_log(request).debug("Input password")
         rp.input_password(password)
+        add_log(request).debug("Create account")
         rp.click_create_account()  
+        add_log(request).info("Account successfully created")
 
         mp = MainPage(self.driver) 
 
+        add_log(request).info("Start checks by URL and title")
         Assertions.check_word(mp.check_title(), "Текущие задачи")
+        add_log(request).debug("Title is ok")
         Assertions.assert_url(self.driver, "https://try.vikunja.io/")
-        rp.save_screenshot()
+        add_log(request).debug("URL is ok")
+        mp.save_screenshot()
+        add_log(request).info("Checks passed successfully")
         
 
-    def test_register_not_new_user(self):
+    def test_register_not_new_user(self, request):
+
         rp = RegisterPage(self.driver)
-        try:
-            rp.register(DefaultUser.username, DefaultUser.email, DefaultUser.password)
-            Assertions.assert_url(self.driver, "https://try.vikunja.io/register")
-            Assertions.check_word(rp.cheking_message(), "A user with this username already exists.")
-        except AssertionError:
-            rp.register(DefaultUser.username, DefaultUser.email, DefaultUser.password)
-            Assertions.check_word(rp.cheking_message(), "A user with this username already exists.")
-            Assertions.assert_url(self.driver, "https://try.vikunja.io/register")
-        finally:
-            rp.save_screenshot()
+        
+        add_log(request).info(f"Input user data: {DefaultUser.username, DefaultUser.password}")
+        rp.register(DefaultUser.username, DefaultUser.email, DefaultUser.password)
+        add_log(request).info("Start checks by message and URL")
+        Assertions.assert_url(self.driver, "https://try.vikunja.io/register")
+        add_log(request).debug("URL is ok")
+        Assertions.check_word(rp.cheking_message(), "A user with this username already exists.")
+        add_log(request).debug("Message is ok")
+        rp.save_screenshot()
+        add_log(request).info("Checks passed successfully")
 
 
 
