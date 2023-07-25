@@ -3,6 +3,8 @@ sys.path.append('./utils/')
 sys.path.append('./testdata/')
 from locators import ProjectsPageLocators
 from base_methods import BaseMethods
+from logger import Logger
+from selenium.common.exceptions import StaleElementReferenceException
 
 
 
@@ -68,27 +70,47 @@ class ProjectsPage(BaseMethods):
     
     """Основные тестовые методы"""
 
-    def create_project(self, name):
+    def create_project(self, request, name):
         self.click_create_project()
+        Logger.add_to_log(request).debug("Click create project")
         self.input_project_name(name)
+        Logger.add_to_log(request).debug("Input project name")
         self.click_create_button()
+        Logger.add_to_log(request).debug("Click create")
     
-    def add_task_click_checkbox(self, taskname):
+    def add_task_click_checkbox(self, request, taskname):
         self.input_taskname(taskname)
+        Logger.add_to_log(request).debug("Input task name")
         self.click_add_task_button()
+        Logger.add_to_log(request).debug("Click add task")
         self.click_task_chexbox()
+        Logger.add_to_log(request).debug("Click checkbox")
 
-    def create_project_add_task(self, name, taskname):
+    def create_project_add_task(self, request, name, taskname):
         self.click_create_project()
+        Logger.add_to_log(request).debug("Click create project")
         self.input_project_name(name)
+        Logger.add_to_log(request).debug("Input project name")
         self.click_create_button()
+        Logger.add_to_log(request).debug("Click create")
         self.input_taskname(taskname)
+        Logger.add_to_log(request).debug("Input task name")
         self.click_add_task_button()
+        Logger.add_to_log(request).debug("Click add task")
 
-    def delete_project(self):
+    def delete_project(self, request):
         self.click_project_menu()
+        Logger.add_to_log(request).debug("Click project menu")
         self.click_delete_project()
-        self.click_confirm_delete_project()
+        Logger.add_to_log(request).debug("Click delete project")
+        try:
+            self.click_confirm_delete_project()
+            Logger.add_to_log(request).debug("Click confirm delete project")
+        except StaleElementReferenceException:
+            Logger.add_to_log(request).exception("StaleElementReferenceException")
+            self.click_confirm_delete_project()
+            Logger.add_to_log(request).debug("Click confirm delete project")
+
 
 
     

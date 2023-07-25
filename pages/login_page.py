@@ -3,6 +3,7 @@ sys.path.append('./utils/')
 sys.path.append('./testdata/')
 from locators import LoginPageLocators
 from base_methods import BaseMethods
+from logger import Logger
 
 
 
@@ -38,8 +39,12 @@ class LoginPage(BaseMethods):
     
     """Основные тестовые методы"""
 
-    def log_in(self, login, password):
+    def log_in(self, request, login, password):
         self.input_login(login)
+        Logger.add_to_log(request).debug("Input login")
         self.input_password(password)
+        Logger.add_to_log(request).debug("Input password")
         self.click_remember_me()
+        Logger.add_to_log(request).debug("Click checkbox")
         self.click_log_in()
+        Logger.add_to_log(request).debug("Click log in")

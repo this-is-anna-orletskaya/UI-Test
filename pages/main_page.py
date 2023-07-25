@@ -3,6 +3,7 @@ sys.path.append('./utils/')
 sys.path.append('./testdata/')
 from locators import MainPageLocators
 from base_methods import BaseMethods
+from logger import Logger
 
 
 
@@ -53,10 +54,14 @@ class MainPage(BaseMethods):
     
     """Основные тестовые методы"""
 
-    def create_task(self, task):
+    def create_task(self, request, task):
         self.input_task_field(task)
+        Logger.add_to_log(request).debug("Input task")
         self.click_task_button()
+        Logger.add_to_log(request).debug("Click create task")
     
-    def go_to_user_settings(self):
+    def go_to_user_settings(self, request):
         self.click_username()
+        Logger.add_to_log(request).debug("Click on username")
         self.click_settings()
+        Logger.add_to_log(request).debug("Click on settings")

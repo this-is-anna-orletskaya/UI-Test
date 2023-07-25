@@ -1,9 +1,9 @@
 import sys
 sys.path.append('./utils/')
 sys.path.append('./testdata/')
-from main_page import MainPage
 from locators import RegisterPageLocators
 from base_methods import BaseMethods
+from logger import Logger
 
 
 
@@ -36,9 +36,13 @@ class RegisterPage(BaseMethods):
     def cheking_message(self):
         return self.get_element_to_be_clickable_by_xpath(RegisterPageLocators.check_message_locator)
     
-    def register(self, username, email, password):
+    def register(self, request, username, email, password):
         self.input_username(username)
+        Logger.add_to_log(request).debug("Input username")
         self.input_email(email)
+        Logger.add_to_log(request).debug("Input email")
         self.input_password(password)
+        Logger.add_to_log(request).debug("Input password")
         self.click_create_account()
+        Logger.add_to_log(request).debug("Click create account")
         

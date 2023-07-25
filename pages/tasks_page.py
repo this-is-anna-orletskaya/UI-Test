@@ -3,7 +3,7 @@ sys.path.append('./utils/')
 sys.path.append('./testdata/')
 from locators import TasksPageLocators
 from base_methods import BaseMethods
-
+from logger import Logger
 
 
 
@@ -56,11 +56,26 @@ class TasksPage(BaseMethods):
     def check_title(self):
         return self.get_element_to_be_clickable_by_xpath(TasksPageLocators.check_title_locator)
     
+    def click_username(self):
+        self.get_element_to_be_clickable_by_xpath(TasksPageLocators.username_button_locator).click()
+    
+    def click_log_out(self):
+        self.get_element_to_be_clickable_by_xpath(TasksPageLocators.log_out_button_locator).click()
+    
 
     """Основные тестовые методы"""
 
-    def select_date_interval(self):
+    def select_date_interval(self, request):
         self.click_select_date()
+        Logger.add_to_log(request).debug("Click select date")
         self.click_this_week_interval()
+        Logger.add_to_log(request).debug("Click choose this week interval")
         self.click_desktop()
+        Logger.add_to_log(request).debug("Click on the desktop")
+
+    def log_out(self, request):
+        self.click_username()
+        Logger.add_to_log(request).debug("Click on username")
+        self.click_log_out()
+        Logger.add_to_log(request).debug("Click log out")
 

@@ -21,5 +21,5 @@ class BaseMethods:
     
     def save_screenshot(self):
         now_date =  datetime.datetime.utcnow().strftime("%d.%m.%Y.%H.%M.%S.")
-        name_screen = now_date + ".png"
+        name_screen = now_date + "png"
         self.driver.save_screenshot("./screenshots//" + name_screen)

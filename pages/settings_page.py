@@ -3,6 +3,7 @@ sys.path.append('./utils/')
 sys.path.append('./testdata/')
 from locators import SettingsPageLocators
 from base_methods import BaseMethods
+from logger import Logger
 
 
 
@@ -41,13 +42,20 @@ class SettingsPage(BaseMethods):
 
     """Основные тестовые методы"""
 
-    def change_password(self, new_password, old_password):
+    def change_password(self, request, new_password, old_password):
         self.click_change_password()
+        Logger.add_to_log(request).debug("Click change password")
         self.input_new_password(new_password)
+        Logger.add_to_log(request).debug("Input new password")
         self.input_new_password_again(new_password)
+        Logger.add_to_log(request).debug("Input new password on second field")
         self.input_old_password(old_password)
+        Logger.add_to_log(request).debug("Input old password")
         self.click_save_password()
+        Logger.add_to_log(request).debug("Click save password")
     
-    def log_out(self):
+    def log_out(self, request):
         self.click_username()
+        Logger.add_to_log(request).debug("Click on username")
         self.click_log_out()
+        Logger.add_to_log(request).debug("Click log out")

@@ -16,7 +16,7 @@ class Assertions:
         print("Проверка URL выполнена.")
     
     @staticmethod
-    def check_word(word, expected_word: str):
+    def assert_element(word, expected_word: str):
         value_word = word.text 
         assert value_word == expected_word 
-        print("Проверка по слову выполнена.")
+        print("Проверка по элементу выполнена.")

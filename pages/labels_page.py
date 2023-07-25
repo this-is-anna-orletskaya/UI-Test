@@ -3,7 +3,7 @@ sys.path.append('./utils/')
 sys.path.append('./testdata/')
 from locators import LabelsPageLocators
 from base_methods import BaseMethods
-
+from logger import Logger
 
 
 
@@ -53,12 +53,17 @@ class LabelsPage(BaseMethods):
 
     """Основные тестовые методы"""
 
-    def create_label(self, name):
+    def create_label(self, request, name):
         self.click_new_label()
+        Logger.add_to_log(request).debug("Click create new label")
         self.input_label_name(name)
+        Logger.add_to_log(request).debug("Input label name")
         self.click_create_label()
+        Logger.add_to_log(request).debug("Click create label")
     
-    def delete_label(self):
+    def delete_label(self, request):
         self.click_delete_label()
+        Logger.add_to_log(request).debug("Click delete label")
         self.click_confirm_delete()
+        Logger.add_to_log(request).debug("Click confirm delete label")
     
