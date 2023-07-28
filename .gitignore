@@ -1,10 +1,10 @@
 /.pytest_cache
 /.vscode
-/allure_reports
 /geckodriver.log
-/logs
-/screenshots
 /__pycache__
 /selenium_env
+*.json
+*.txt
+*.png
 *.pyc
 *.log
