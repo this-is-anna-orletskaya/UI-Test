@@ -12,8 +12,8 @@ from labels_page import LabelsPage
 from settings_page import SettingsPage
 from tasks_page import TasksPage
 from users import DefaultUser, ShortUser, WrongUser
-from assertions import Assertions
 from logger import Logger
+from database import DbClient
 
 
 
@@ -22,7 +22,6 @@ from logger import Logger
 """Тестирование регистрации пользователя в системе"""
 @allure.epic("Тестирование регистрации пользователя в системе")
 @pytest.mark.usefixtures("setup")
-@pytest.mark.skip
 class TestRegister:
 
     @pytest.fixture(autouse=True)
@@ -34,8 +33,9 @@ class TestRegister:
 
     @allure.story("Тест регистрации нового пользователя")
     @allure.severity(allure.severity_level.CRITICAL)
-    @pytest.mark.parametrize("username, email, password", [(DefaultUser.username, DefaultUser.email, DefaultUser.password), (ShortUser.username, ShortUser.email, ShortUser.password),])
-    def test_register_new_user(self, request, username, email, password):
+    @pytest.mark.parametrize("id, username, email, password", [(DefaultUser.id, DefaultUser.username, DefaultUser.email, DefaultUser.password), (ShortUser.id, ShortUser.username, ShortUser.email, ShortUser.password),])
+    @pytest.mark.skip
+    def test_register_new_user(self, request, id, username, email, password):
         
         rp = RegisterPage(self.driver)
         Logger.add_to_log(request).info(f"Input user data: {username, email, password}")
@@ -50,12 +50,14 @@ class TestRegister:
 
         mp = MainPage(self.driver) 
         Logger.add_to_log(request).info("Start checks by URL and title")
-        Assertions.assert_element(mp.check_title(), "Текущие задачи")
+        mp.assert_text_element(mp.check_title(), "Текущие задачи")
         Logger.add_to_log(request).debug("Title is ok")
-        Assertions.assert_url(self.driver, "https://try.vikunja.io/")
+        mp.assert_url("https://try.vikunja.io/")
         Logger.add_to_log(request).debug("URL is ok")
         mp.save_screenshot()
         Logger.add_to_log(request).info("Checks passed successfully")
+        assert DbClient.execute_read_query(f"SELECT * FROM vikunja.user WHERE username = '{username}'") == (id, username, password, email)
+
 
     @allure.story("Тест регистрации нового пользователя с использованием данных уже существующего пользователя")  
     @allure.severity(allure.severity_level.CRITICAL)
@@ -65,9 +67,9 @@ class TestRegister:
         Logger.add_to_log(request).info(f"Input user data: {DefaultUser.username, DefaultUser.password}")
         rp.register(request, DefaultUser.username, DefaultUser.email, DefaultUser.password)
         Logger.add_to_log(request).info("Start checks by message and URL")
-        Assertions.assert_url(self.driver, "https://try.vikunja.io/register")
+        rp.assert_url("https://try.vikunja.io/register")
         Logger.add_to_log(request).debug("URL is ok")
-        Assertions.assert_element(rp.cheking_message(), "A user with this username already exists.")
+        rp.assert_text_element(rp.cheking_message(), "A user with this username already exists.")
         Logger.add_to_log(request).debug("Message is ok")
         rp.save_screenshot()
         Logger.add_to_log(request).info("Checks passed successfully")
@@ -96,13 +98,14 @@ class TestLogin:
 
         mp = MainPage(self.driver)
         Logger.add_to_log(request).info("Start checks by title and URL")
-        Assertions.assert_element(mp.check_title(), "Текущие задачи")
+        lp.assert_text_element(mp.check_title(), "Текущие задачи")
         Logger.add_to_log(request).debug("Title is ok")
-        Assertions.assert_url(self.driver, "https://try.vikunja.io/")
+        lp.assert_url("https://try.vikunja.io/")
         Logger.add_to_log(request).debug("URL is ok")
         mp.save_screenshot()
         Logger.add_to_log(request).info("Checks passed successfully")
     
+
     @allure.story("Тест авторизации пользователя с неправильными логином и паролем")
     @allure.severity(allure.severity_level.NORMAL)
     def test_login_wrong_user(self, request):
@@ -111,9 +114,9 @@ class TestLogin:
         Logger.add_to_log(request).info(f"Input user data: {WrongUser.username, WrongUser.password}")
         lp.log_in(request, WrongUser.username, WrongUser.password)
         Logger.add_to_log(request).info("Start checks by URL and message")
-        Assertions.assert_url(self.driver, "https://try.vikunja.io/login")
+        lp.assert_url("https://try.vikunja.io/login")
         Logger.add_to_log(request).debug("URL is ok")
-        Assertions.assert_element(lp.check_danger_message(), "Неверное имя пользователя или пароль.")
+        lp.assert_text_element(lp.check_danger_message(), "Неверное имя пользователя или пароль.")
         Logger.add_to_log(request).debug("Message is ok")
         lp.save_screenshot()
         Logger.add_to_log(request).info("Checks passed successfully")
@@ -143,9 +146,9 @@ class TestBase:
 
         mp = MainPage(self.driver)
         Logger.add_to_log(request).info("Start checks by URL and title")
-        Assertions.assert_element(mp.check_title(), "Текущие задачи")
+        mp.assert_text_element(mp.check_title(), "Текущие задачи")
         Logger.add_to_log(request).debug("Title is ok")
-        Assertions.assert_url(self.driver, "https://try.vikunja.io/")
+        mp.assert_url("https://try.vikunja.io/")
         Logger.add_to_log(request).debug("URL is ok")
         with allure.step("Переход к проектам"):
             mp.click_projects()
@@ -155,7 +158,7 @@ class TestBase:
         Logger.add_to_log(request).info(f"Creating project with name: {DefaultUser.project_name}")
         with allure.step("Создание проекта"):
             pp.create_project(request, DefaultUser.project_name)
-        Assertions.assert_element(pp.check_project_title(), DefaultUser.project_name)
+        pp.assert_text_element(pp.check_project_title(), DefaultUser.project_name)
         Logger.add_to_log(request).debug("Project name is ok")
         Logger.add_to_log(request).info("Create task and click to checkbox")
         with allure.step("Добавление задачи и отметка о выполнении"):
@@ -167,9 +170,9 @@ class TestBase:
         pp.save_screenshot()
 
         mp = MainPage(self.driver)
-        Assertions.assert_element(mp.check_title(), "Текущие задачи")
+        mp.assert_text_element(mp.check_title(), "Текущие задачи")
         Logger.add_to_log(request).debug("Title is ok")
-        Assertions.assert_url(self.driver, "https://try.vikunja.io/")
+        mp.assert_url("https://try.vikunja.io/")
         Logger.add_to_log(request).debug("URL is ok")
         with allure.step("Переход к меткам"):
             pp.click_labels()
@@ -192,7 +195,7 @@ class TestBase:
             tp.click_checkbox()
         Logger.add_to_log(request).debug("Click checkbox")
         tp.save_screenshot()
-        Assertions.assert_element(tp.check_title(), "Эта неделя")
+        tp.assert_text_element(tp.check_title(), "Эта неделя")
         Logger.add_to_log(request).debug("Title is ok")
         with allure.step("Выход из системы"):
             tp.log_out(request)
@@ -200,7 +203,7 @@ class TestBase:
         tp.save_screenshot()
 
         lp = LoginPage(self.driver)
-        Assertions.assert_element(lp.check_title(), "Войти")
+        lp.assert_text_element(lp.check_title(), "Войти")
         Logger.add_to_log(request).debug("Title is ok")
         Logger.add_to_log(request).info("Checks passed successfully")
 
@@ -214,7 +217,7 @@ class TestBase:
             lp.log_in(request, DefaultUser.username, DefaultUser.password)
 
         mp = MainPage(self.driver)
-        Assertions.assert_element(mp.check_title(), "Текущие задачи")
+        mp.assert_text_element(mp.check_title(), "Текущие задачи")
         Logger.add_to_log(request).debug("Title is ok")
         with allure.step("Переход к проектам"):
             mp.click_projects()
@@ -225,7 +228,7 @@ class TestBase:
         with allure.step("Cоздание проекта и задачи в нем"):
             pp.create_project_add_task(request, DefaultUser.project_name, DefaultUser.task_name)
         Logger.add_to_log(request).info("Start check by project title")
-        Assertions.assert_element(pp.check_project_title(), DefaultUser.project_name)
+        pp.assert_text_element(pp.check_project_title(), DefaultUser.project_name)
         Logger.add_to_log(request).debug(f"Project title '{DefaultUser.project_name}' is ok")
         pp.save_screenshot()
         Logger.add_to_log(request).info("Check passed successfully")
@@ -305,9 +308,9 @@ class TestSettings:
             lp.log_in(request, DefaultUser.username, DefaultUser.new_password)
 
         Logger.add_to_log(request).info("Start checks by URL and title")
-        Assertions.assert_element(mp.check_title(), "Текущие задачи")
+        lp.assert_text_element(mp.check_title(), "Текущие задачи")
         Logger.add_to_log(request).debug("Title is ok")
-        Assertions.assert_url(self.driver, "https://try.vikunja.io/")
+        lp.assert_url("https://try.vikunja.io/")
         Logger.add_to_log(request).debug("URL is ok")
         lp.save_screenshot()
         Logger.add_to_log(request).info("Checks passed successfully")

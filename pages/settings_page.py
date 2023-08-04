@@ -19,25 +19,25 @@ class SettingsPage(BaseMethods):
     url = "https://try.vikunja.io/user/settings/general"
 
     def click_change_password(self):
-        self.get_element_to_be_clickable_by_xpath(SettingsPageLocators.change_password_link_locator).click()
+        self.get_element_to_be_clickable(SettingsPageLocators.change_password_link_locator).click()
 
     def input_new_password(self, new_password):
-        self.get_element_to_be_clickable_by_xpath(SettingsPageLocators.new_password_field_locator).send_keys(new_password)
+        self.get_element_to_be_clickable(SettingsPageLocators.new_password_field_locator).send_keys(new_password)
     
     def input_new_password_again(self, new_password):
-        self.get_element_to_be_clickable_by_xpath(SettingsPageLocators.confirm_new_password_field_locator).send_keys(new_password)
+        self.get_element_to_be_clickable(SettingsPageLocators.confirm_new_password_field_locator).send_keys(new_password)
     
     def input_old_password(self, old_password):
-        self.get_element_to_be_clickable_by_xpath(SettingsPageLocators.old_password_field_locator).send_keys(old_password)
+        self.get_element_to_be_clickable(SettingsPageLocators.old_password_field_locator).send_keys(old_password)
 
     def click_save_password(self):
-        self.get_element_to_be_clickable_by_xpath(SettingsPageLocators.save_button_locator).click()
+        self.get_element_to_be_clickable(SettingsPageLocators.save_button_locator).click()
     
     def click_username(self):
-        self.get_element_to_be_clickable_by_xpath(SettingsPageLocators.username_button_locator).click()
+        self.get_element_to_be_clickable(SettingsPageLocators.username_button_locator).click()
     
     def click_log_out(self):
-        self.get_element_to_be_clickable_by_xpath(SettingsPageLocators.log_out_button_locator).click()
+        self.get_element_to_be_clickable(SettingsPageLocators.log_out_button_locator).click()
 
 
     """Основные тестовые методы"""

@@ -19,37 +19,37 @@ class MainPage(BaseMethods):
     url = "https://try.vikunja.io/"
 
     def click_view(self):
-        self.get_element_to_be_clickable_by_xpath(MainPageLocators.view_link_locator).click()
+        self.get_element_to_be_clickable(MainPageLocators.view_link_locator).click()
         
     def click_upcoming_tasks(self):
-        self.get_element_to_be_clickable_by_xpath(MainPageLocators.upcoming_tasks_link_locator).click()
+        self.get_element_to_be_clickable(MainPageLocators.upcoming_tasks_link_locator).click()
     
     def click_projects(self):
-        self.get_element_to_be_clickable_by_xpath(MainPageLocators.projects_link_locator).click()
+        self.get_element_to_be_clickable(MainPageLocators.projects_link_locator).click()
 
     def click_labels(self):
-        self.get_element_to_be_clickable_by_xpath(MainPageLocators.labels_link_locator).click()
+        self.get_element_to_be_clickable(MainPageLocators.labels_link_locator).click()
 
     def click_teams(self):
-        self.get_element_to_be_clickable_by_xpath(MainPageLocators.teams_link_locator).click()
+        self.get_element_to_be_clickable(MainPageLocators.teams_link_locator).click()
     
     def click_username(self):
-        self.get_element_to_be_clickable_by_xpath(MainPageLocators.username_button_locator).click()
+        self.get_element_to_be_clickable(MainPageLocators.username_button_locator).click()
 
     def click_settings(self):
-        self.get_element_to_be_clickable_by_xpath(MainPageLocators.settings_button_locator).click()
+        self.get_element_to_be_clickable(MainPageLocators.settings_button_locator).click()
 
     def click_log_out(self):
-        self.get_element_to_be_clickable_by_xpath(MainPageLocators.log_out_button_locator).click()
+        self.get_element_to_be_clickable(MainPageLocators.log_out_button_locator).click()
 
     def input_task_field(self, task):
-        self.get_element_to_be_clickable_by_xpath(MainPageLocators.task_field_locator).send_keys(task)
+        self.get_element_to_be_clickable(MainPageLocators.task_field_locator).send_keys(task)
 
     def click_task_button(self):
-        self.get_element_to_be_clickable_by_xpath(MainPageLocators.task_button_locator).click()
+        self.get_element_to_be_clickable(MainPageLocators.task_button_locator).click()
     
     def check_title(self):
-        return self.get_element_to_be_clickable_by_xpath(MainPageLocators.check_title_locator)
+        return self.get_element_is_visible(MainPageLocators.check_title_locator)
 
     
     """Основные тестовые методы"""

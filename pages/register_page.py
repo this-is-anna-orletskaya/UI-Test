@@ -19,22 +19,22 @@ class RegisterPage(BaseMethods):
     url = "https://try.vikunja.io/register"
 
     def input_username(self, username):
-        self.get_element_to_be_clickable_by_xpath(RegisterPageLocators.username_field_locator).send_keys(username)
+        self.get_element_to_be_clickable(RegisterPageLocators.username_field_locator).send_keys(username)
 
     def input_email(self, email):
-        self.get_element_to_be_clickable_by_xpath(RegisterPageLocators.email_field_locator).send_keys(email)
+        self.get_element_to_be_clickable(RegisterPageLocators.email_field_locator).send_keys(email)
     
     def input_password(self, password):
-        self.get_element_to_be_clickable_by_xpath(RegisterPageLocators.password_field_locator).send_keys(password)
+        self.get_element_to_be_clickable(RegisterPageLocators.password_field_locator).send_keys(password)
     
     def click_create_account(self):
-        self.get_element_to_be_clickable_by_xpath(RegisterPageLocators.create_account_button_locator).click()
+        self.get_element_to_be_clickable(RegisterPageLocators.create_account_button_locator).click()
 
     def click_go_log_in(self):
-        self.get_element_to_be_clickable_by_xpath(RegisterPageLocators.go_log_in_locator).click()
+        self.get_element_to_be_clickable(RegisterPageLocators.go_log_in_locator).click()
     
     def cheking_message(self):
-        return self.get_element_to_be_clickable_by_xpath(RegisterPageLocators.check_message_locator)
+        return self.get_element_is_visible(RegisterPageLocators.check_message_locator)
     
     def register(self, request, username, email, password):
         self.input_username(username)

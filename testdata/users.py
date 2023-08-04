@@ -5,6 +5,7 @@
 
 class DefaultUser:
 
+    id = 1
     email = "testmail@gmail.com"
     username = "testusername"
     password = "testpassword" 
@@ -18,6 +19,7 @@ class DefaultUser:
 
 class ShortUser:
 
+    id = 2
     email = "mail@gmail.com"
     username = "urn"
     password = "password" 
