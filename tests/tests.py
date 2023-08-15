@@ -34,7 +34,6 @@ class TestRegister:
     @allure.story("Тест регистрации нового пользователя")
     @allure.severity(allure.severity_level.CRITICAL)
     @pytest.mark.parametrize("id, username, email, password", [(DefaultUser.id, DefaultUser.username, DefaultUser.email, DefaultUser.password), (ShortUser.id, ShortUser.username, ShortUser.email, ShortUser.password),])
-    @pytest.mark.skip
     def test_register_new_user(self, request, id, username, email, password):
         
         rp = RegisterPage(self.driver)
